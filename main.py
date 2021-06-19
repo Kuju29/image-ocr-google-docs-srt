@@ -6,16 +6,17 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
 from google.oauth2 import service_account
-import multiprocessing
+# import multiprocessing
 from pathlib import Path
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 import io
+import sys
 
 SCOPES = ['https://www.googleapis.com/auth/drive']
 CLIENT_SECRET_FILE = 'credentials.json'
 
 SA_ACCOUNT = True
-SA_SECRET_FILE = 'banded-acronym-316314-02276c517edb.json'
+SA_SECRET_FILE = 'sa-account.json'
 
 
 def get_credentials(CLIENT_SECRET_FILE):
@@ -133,16 +134,18 @@ def main(mydir="images"):
 
         line += 1
 
-        print(f"{imgname} Done.")
+        print(f"{line} {imgname} Done.")
 
     srt_file.close()
 
 
 if __name__ == '__main__':
+  main(sys.argv[1])
 #     main("images2")
-    for i in range(1,25):
-    ## right here
-        myimages = f"images{i}"
-        p = multiprocessing.Process(target=main, args=(myimages,))
-        p.start()
-        p.join()
+#     starttime = time.time()
+#     for i in range(1,25):
+#     ## right here
+#         myimages = f"images{i}"
+#         p = multiprocessing.Process(target=main, args=(myimages,))
+#         p.start()
+#     print('Time taken = {} seconds'.format(time.time() - starttime))
