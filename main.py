@@ -18,7 +18,6 @@ CLIENT_SECRET_FILE = 'credentials.json'
 SA_ACCOUNT = True
 SA_SECRET_FILE = 'sa-account.json'
 
-
 def get_credentials(CLIENT_SECRET_FILE):
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
@@ -80,6 +79,9 @@ def main(mydir="images"):
         raw_txtfile = f'{current_directory}/raw_texts/{imgname[:-5]}.txt'
         txtfile = f'{current_directory}/texts/{imgname[:-5]}.txt'
 
+        if os.path.exists(txtfile):
+            continue
+
         mime = 'application/vnd.google-apps.document'
         res = service.files().create(
             body={
@@ -133,8 +135,8 @@ def main(mydir="images"):
         ])
 
         line += 1
-
         print(f"{line} {imgname} Done.")
+
 
     srt_file.close()
 
@@ -142,10 +144,3 @@ def main(mydir="images"):
 if __name__ == '__main__':
   main(sys.argv[1])
 #     main("images2")
-#     starttime = time.time()
-#     for i in range(1,25):
-#     ## right here
-#         myimages = f"images{i}"
-#         p = multiprocessing.Process(target=main, args=(myimages,))
-#         p.start()
-#     print('Time taken = {} seconds'.format(time.time() - starttime))
