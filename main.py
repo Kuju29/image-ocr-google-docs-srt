@@ -142,5 +142,5 @@ def main(mydir="images"):
 
 
 if __name__ == '__main__':
-  main(sys.argv[1])
-#     main("images2")
+  # main(sys.argv[1])
+   main()
