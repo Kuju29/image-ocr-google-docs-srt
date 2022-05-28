@@ -6,7 +6,9 @@
 ```
 pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
 ```
-* Need file "sa-account.json" from "Service Accounts" Or "credentials.json" from "OAuth 2.0" Credentials on google api
+* Need key API : [https://console.cloud.google.com/apis/credentials](https://console.cloud.google.com/apis/credentials)
+  - File name "sa-account.json" from "Service Accounts"
+  - Or file name "credentials.json" from "OAuth 2.0"
 * Export images using [VideoSubFinder](https://sourceforge.net/projects/videosubfinder/) and put them in images folder
 * Run main.py and login with google account (only for first time)
 * Wait until it complete processing evey image.
