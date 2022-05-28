@@ -15,7 +15,7 @@ import sys
 SCOPES = ['https://www.googleapis.com/auth/drive']
 CLIENT_SECRET_FILE = 'credentials.json'
 
-SA_ACCOUNT = True
+SA_ACCOUNT = os.path.isfile('./sa-account.json')
 SA_SECRET_FILE = 'sa-account.json'
 
 def get_credentials(CLIENT_SECRET_FILE):
