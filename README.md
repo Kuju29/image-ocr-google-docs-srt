@@ -8,8 +8,6 @@
 ```
 pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
 ```
-* Export images using [VideoSubFinder](https://sourceforge.net/projects/videosubfinder/)
-* Edit main.py in "DIR_images" put your image location. e.g. "D:\utorrent" change to "D:/utorrent"
-![image](https://user-images.githubusercontent.com/22098092/170997358-0e018d48-9f84-4ac8-9dbf-914ab464c4f7.png)
-* Run main.py and if use credentials.json need login with google account (only for first time)
+* Export images using [VideoSubFinder](https://sourceforge.net/projects/videosubfinder/) and put them in images folder
+* Run main.py and login with google account (only for first time)
 * Wait until it complete processing evey image.
