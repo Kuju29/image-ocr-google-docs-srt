@@ -12,6 +12,17 @@ from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 import io
 import sys
 
+# ---------- Where image folder. Need change "\" to "/" ----------
+
+DIR_images = 'C:/Users/..../Downloads/Test/VideoSubFinder_5.60_x64/Release_x64/TXTImages'
+# DIR_images = 'images'
+
+# ----------------------------------------------------------------------------
+
+isdir = os.path.isdir(DIR_images) 
+if not isdir:
+    print('Input your folder "DIR_images"')
+
 SCOPES = ['https://www.googleapis.com/auth/drive']
 CLIENT_SECRET_FILE = 'credentials.json'
 
@@ -44,7 +55,7 @@ def Create_Sa_Service(SA_SECRET_FILE):
     credentials = service_account.Credentials.from_service_account_file(SA_SECRET_FILE,scopes=SCOPES)
     return build('drive', 'v3', credentials=credentials, cache_discovery=False)
 
-def main(mydir="images"):
+def main(mydir=DIR_images):
     if SA_ACCOUNT and SA_SECRET_FILE:
         service = Create_Sa_Service(SA_SECRET_FILE)
     else:
@@ -53,7 +64,8 @@ def main(mydir="images"):
     # txtfile = 'text.txt'  # Text file outputted by OCR
 
     current_directory = Path(Path.cwd())
-    images_dir = Path(f'{current_directory}/{mydir}')
+    images_dir = Path(f'{mydir}')
+    # images_dir = Path(f'{current_directory}/{mydir}')
     raw_texts_dir = Path(f'{current_directory}/raw_texts')
     texts_dir = Path(f'{current_directory}/texts')
     srt_file = open(Path(f'{current_directory}/subtitle_output.srt'), 'a', encoding='utf-8')
@@ -70,7 +82,8 @@ def main(mydir="images"):
     if not texts_dir.exists():
         texts_dir.mkdir()
 
-    images = Path(f'{current_directory}/{mydir}').rglob('*.jpeg')
+    images = Path(f'{mydir}').rglob('*.jpeg')
+    # images = Path(f'{current_directory}/{mydir}').rglob('*.jpeg')
     for image in images:
 
         # Get data
@@ -142,5 +155,4 @@ def main(mydir="images"):
 
 
 if __name__ == '__main__':
-  # main(sys.argv[1])
    main()
