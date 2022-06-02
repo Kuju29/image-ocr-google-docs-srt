@@ -1,5 +1,6 @@
 # How to use
 * [Install python](https://www.python.org/)
+* Download [image-ocr-google-docs-srt](https://github.com/Kuju29/image-ocr-google-docs-srt/archive/refs/heads/master.zip)
 * Create new project from [Python Quickstart](https://developers.google.com/drive/api/v3/quickstart/python)
 * Create new API for [download credentials.json or sa-account.json](https://console.cloud.google.com/apis/credentials) file and put beside main.py 
   - "credentials.json" rename from "[OAuth 2.0](https://console.cloud.google.com/apis/credentials/oauthclient)" API file (free)
