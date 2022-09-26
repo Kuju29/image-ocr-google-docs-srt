@@ -1,3 +1,5 @@
+Note : I recommend you to use it from [subtitleedit](https://github.com/SubtitleEdit/subtitleedit/releases), they just developed to support this.
+
 # How to use
 * [Install python](https://www.python.org/)
 * Download [image-ocr-google-docs-srt](https://github.com/Kuju29/image-ocr-google-docs-srt/archive/refs/heads/master.zip)
