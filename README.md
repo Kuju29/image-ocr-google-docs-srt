@@ -1,4 +1,4 @@
-Note : I recommend you to use it from [subtitleedit](https://github.com/SubtitleEdit/subtitleedit/releases), they just developed to support this.
+Note : I recommend you to use it from [subtitleedit](https://github.com/SubtitleEdit/subtitleedit/releases), they just developed to support this. But if you still want free service My project is still working.
 
 # How to use
 * [Install python](https://www.python.org/)
