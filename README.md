@@ -1,7 +1,23 @@
 Note : I recommend you to use it from [subtitleedit](https://github.com/SubtitleEdit/subtitleedit/releases), they just developed to support this. But if you still want free service My project is still working.
 
+# Requirements
+* Install **[python](https://www.python.org/)**
+* Install **Pip** in "Command Prompt"
+```
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py
+```
+_if error on windows 10 : `Go to -> "start" and type "Manage App Execution Aliases". Go to it and turn off "Python", "Python3"`_
+* Install **Google cloud vision** in "Command Prompt"
+```
+pip install google-cloud-vision
+```
+* Install **Google Client Library using** in "Command Prompt"
+```
+pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+```
+
 # How to use
-* [Install python](https://www.python.org/)
 * Download [image-ocr-google-docs-srt](https://github.com/Kuju29/image-ocr-google-docs-srt/archive/refs/heads/master.zip)
 * Create new project from [Python Quickstart](https://developers.google.com/drive/api/v3/quickstart/python)
 * Create new API for download api.json file and put beside main.py 
@@ -10,10 +26,6 @@ Note : I recommend you to use it from [subtitleedit](https://github.com/Subtitle
   
     ![image](https://user-images.githubusercontent.com/22098092/171820037-08f5f23d-109e-415f-8f45-ea6acd7aa7e4.png)
 
-* Install the Google Client Library using
-```
-pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
-```
 * Export images using [VideoSubFinder](https://sourceforge.net/projects/videosubfinder/) and put them in images folder
 * Input image location in `Config` file. [ **Need change `\` to `/` | E.g. `C:\Users` to `C:/Users`** ]
 * Run main.py and login with google account (only for first time)
