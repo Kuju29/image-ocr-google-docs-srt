@@ -7,7 +7,7 @@ Note : I recommend you to use it from [subtitleedit](https://github.com/Subtitle
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py
 ```
-_if error on windows 10 : `Go to -> "start" and type "Manage App Execution Aliases". Go to it and turn off "Python", "Python3"`_
+_if error on windows 10 : `Go to -> "start" -> "Search" -> "Manage App Execution Aliases" -> turn off "Python", "Python3"`_
 * Install **Google cloud vision** in "Command Prompt"
 ```
 pip install google-cloud-vision
