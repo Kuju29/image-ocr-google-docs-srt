@@ -1,4 +1,4 @@
-from __future__ import print_function
+from google.cloud import vision
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -10,10 +10,9 @@ import io
 import os
 import json
 
-CREDS_FILE_LOCATION = os.path.join(os.getcwd(),"sa-account.json")
+CREDS_FILE_LOCATION = os.path.join(os.getcwd(), "sa-account.json")
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = CREDS_FILE_LOCATION
 
-from google.cloud import vision
 
 with open('config.json') as config_file:
     data = json.load(config_file)
@@ -66,19 +65,20 @@ def detect_text(path):
     retval = None
     if len(texts) > 0:
         retval = texts[0].description
-        # retval += '\n'    
-    
+        # retval += '\n'
+
     return retval
 
 
 def main(mydir=data['Image_location']):
     if CLIENT_ACCOUNT and CLIENT_SECRET_FILE:
         service = get_credentials(CLIENT_SECRET_FILE)
-        
+
         current_directory = Path(Path.cwd())
         raw_texts_dir = Path(f'{current_directory}/raw_texts')
         texts_dir = Path(f'{current_directory}/texts')
-        srt_file = open(Path(f'{current_directory}/subtitle_output.srt'), 'a', encoding='utf-8')
+        srt_file = open(
+            Path(f'{current_directory}/subtitle_output.srt'), 'a', encoding='utf-8')
         line = 1
 
         if not raw_texts_dir.exists():
@@ -104,12 +104,14 @@ def main(mydir=data['Image_location']):
                     'name': imgname,
                     'mimeType': mime
                 },
-                media_body=MediaFileUpload(imgfile, mimetype=mime, resumable=True)
+                media_body=MediaFileUpload(
+                    imgfile, mimetype=mime, resumable=True)
             ).execute()
 
             downloader = MediaIoBaseDownload(
                 io.FileIO(raw_txtfile, 'wb'),
-                service.files().export_media(fileId=res['id'], mimeType="text/plain")
+                service.files().export_media(
+                    fileId=res['id'], mimeType="text/plain")
             )
             done = False
             while done is False:
@@ -155,7 +157,8 @@ def main(mydir=data['Image_location']):
         srt_file.close()
     else:
         current_directory = os.getcwd()
-        srt_file = open(os.path.join(f'{current_directory}','subtitle_output.srt'), 'w', encoding='utf-8')
+        srt_file = open(os.path.join(
+            f'{current_directory}', 'subtitle_output.srt'), 'w', encoding='utf-8')
 
         images = Path(f'{mydir}').rglob('*.jpeg')
         line = 1
@@ -189,10 +192,12 @@ def main(mydir=data['Image_location']):
                     f'{start_time} --> {end_time}\n',
                     f'{text_content}\n\n'
                 ])
-                print(f"""{line}: [ {start_time}] : {imgname}\n{text_content}\n""")
+                print(
+                    f"""{line}: [ {start_time}] : {imgname}\n{text_content}\n""")
                 line += 1
 
-        srt_file.close()       
+        srt_file.close()
+
 
 if __name__ == '__main__':
-   main()
+    main()
