@@ -2,6 +2,7 @@ Note : I recommend you to use it from [subtitleedit](https://github.com/Subtitle
 
 # Requirements
 * Install **[python](https://www.python.org/)**
+* Install **[nodejs](https://nodejs.org/en/download/)**
 * Install **Pip** in "Command Prompt"
 ```
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
