@@ -28,7 +28,7 @@ pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-
     ![image](https://user-images.githubusercontent.com/22098092/171820037-08f5f23d-109e-415f-8f45-ea6acd7aa7e4.png)
 
 * Export images using [VideoSubFinder](https://sourceforge.net/projects/videosubfinder/) and put them in images folder
-* Input image location in `Config` file. [ **Need change `\` to `\\` | E.g. `C:\Users` to `C:/Users`** ]
+* Input image location in `Config` file. [ **Need change `\` to `\\` | E.g. `C:\Users` to `C:\\Users`** ]
 * Run main.py and login with google account (only for first time)
 * Wait until it complete processing evey image.
 
