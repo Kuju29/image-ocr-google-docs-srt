@@ -10,13 +10,16 @@ import io
 import os
 import json
 
+with open('config.json') as config_file:
+    config_data = json.load(config_file)
+    file_location = config_data['Image_location']
+    data = file_location.replace('\\', '/')
+
+# sa-account
 CREDS_FILE_LOCATION = os.path.join(os.getcwd(), "sa-account.json")
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = CREDS_FILE_LOCATION
 
-
-with open('config.json') as config_file:
-    data = json.load(config_file)
-
+# credentials
 SCOPES = ['https://www.googleapis.com/auth/drive']
 CLIENT_ACCOUNT = os.path.isfile('./credentials.json')
 CLIENT_SECRET_FILE = 'credentials.json'
@@ -24,12 +27,8 @@ CLIENT_SECRET_FILE = 'credentials.json'
 
 def get_credentials(CLIENT_SECRET_FILE):
     creds = None
-    # The file token.json stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
-    # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
@@ -37,7 +36,6 @@ def get_credentials(CLIENT_SECRET_FILE):
             flow = InstalledAppFlow.from_client_secrets_file(
                 CLIENT_SECRET_FILE, SCOPES)
             creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
 
@@ -45,7 +43,6 @@ def get_credentials(CLIENT_SECRET_FILE):
 
 
 def detect_text(path):
-    """Detects text in the file."""
     client = vision.ImageAnnotatorClient()
 
     with io.open(path, 'rb') as image_file:
@@ -65,12 +62,28 @@ def detect_text(path):
     retval = None
     if len(texts) > 0:
         retval = texts[0].description
-        # retval += '\n'
 
     return retval
 
 
-def main(mydir=data['Image_location']):
+def get_time_stamps(imgname):
+    start_hour = imgname.split('_')[0][:2]
+    start_min = imgname.split('_')[1][:2]
+    start_sec = imgname.split('_')[2][:2]
+    start_micro = imgname.split('_')[3][:3]
+
+    end_hour = imgname.split('__')[1].split('_')[0][:2]
+    end_min = imgname.split('__')[1].split('_')[1][:2]
+    end_sec = imgname.split('__')[1].split('_')[2][:2]
+    end_micro = imgname.split('__')[1].split('_')[3][:3]
+
+    start_time = f'{start_hour}:{start_min}:{start_sec},{start_micro}'
+
+    end_time = f'{end_hour}:{end_min}:{end_sec},{end_micro}'
+    return start_time, end_time
+
+
+def main(mydir=data):
     if CLIENT_ACCOUNT and CLIENT_SECRET_FILE:
         service = get_credentials(CLIENT_SECRET_FILE)
 
@@ -89,7 +102,6 @@ def main(mydir=data['Image_location']):
         images = Path(f'{mydir}').rglob('*.jpeg')
         for image in images:
 
-            # Get data
             imgfile = str(image.absolute())
             imgname = str(image.name)
             raw_txtfile = f'{current_directory}/raw_texts/{imgname[:-5]}.txt'
@@ -119,7 +131,6 @@ def main(mydir=data['Image_location']):
 
             service.files().delete(fileId=res['id']).execute()
 
-            # Create clean text file
             raw_text_file = open(raw_txtfile, 'r', encoding='utf-8')
             text_content = raw_text_file.read()
             raw_text_file.close()
@@ -129,22 +140,7 @@ def main(mydir=data['Image_location']):
             text_file.write(text_content)
             text_file.close()
 
-            start_hour = imgname.split('_')[0][:2]
-            start_min = imgname.split('_')[1][:2]
-            start_sec = imgname.split('_')[2][:2]
-            start_micro = imgname.split('_')[3][:3]
-
-            end_hour = imgname.split('__')[1].split('_')[0][:2]
-            end_min = imgname.split('__')[1].split('_')[1][:2]
-            end_sec = imgname.split('__')[1].split('_')[2][:2]
-            end_micro = imgname.split('__')[1].split('_')[3][:3]
-
-            # Format start time
-            start_time = f'{start_hour}:{start_min}:{start_sec},{start_micro}'
-
-            # Format end time
-            end_time = f'{end_hour}:{end_min}:{end_sec},{end_micro}'
-            # Append the line to srt file
+            start_time, end_time = get_time_stamps(imgname)
             srt_file.writelines([
                 f'{line}\n',
                 f'{start_time} --> {end_time}\n',
@@ -164,29 +160,13 @@ def main(mydir=data['Image_location']):
         line = 1
 
         for image in images:
-            # Get data
+
             imgname = str(image.name)
             text_content = detect_text(image)
 
             if text_content is not None:
                 text_content = text_content.strip()
-                start_hour = imgname.split('_')[0][:2]
-                start_min = imgname.split('_')[1][:2]
-                start_sec = imgname.split('_')[2][:2]
-                start_micro = imgname.split('_')[3][:3]
-
-                end_hour = imgname.split('__')[1].split('_')[0][:2]
-                end_min = imgname.split('__')[1].split('_')[1][:2]
-                end_sec = imgname.split('__')[1].split('_')[2][:2]
-                end_micro = imgname.split('__')[1].split('_')[3][:3]
-
-                # Format start time
-                start_time = f'{start_hour}:{start_min}:{start_sec},{start_micro}'
-
-                # Format end time
-                end_time = f'{end_hour}:{end_min}:{end_sec},{end_micro}'
-
-                # Append the line to srt file
+                start_time, end_time = get_time_stamps(imgname)
                 srt_file.writelines([
                     f'{line}\n',
                     f'{start_time} --> {end_time}\n',
