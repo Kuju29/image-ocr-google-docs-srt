@@ -17,14 +17,14 @@ with open('config.json') as config_file:
 
 # sa-account
 CREDS_FILE_LOCATION = os.path.join(os.getcwd(), "sa-account.json")
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = CREDS_FILE_LOCATION
 
 # credentials
-SCOPES = ['https://www.googleapis.com/auth/drive']
 CLIENT_ACCOUNT = os.path.isfile('./credentials.json')
 CLIENT_SECRET_FILE = 'credentials.json'
 
+
 def get_credentials(CLIENT_SECRET_FILE):
+    SCOPES = ['https://www.googleapis.com/auth/drive']
     creds = None
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
@@ -40,7 +40,9 @@ def get_credentials(CLIENT_SECRET_FILE):
 
     return build('drive', 'v3', credentials=creds)
 
-def detect_text(path):
+
+def get_saaccount(path):
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = CREDS_FILE_LOCATION
     client = vision.ImageAnnotatorClient()
 
     with io.open(path, 'rb') as image_file:
@@ -63,6 +65,7 @@ def detect_text(path):
 
     return retval
 
+
 def get_time_stamps(imgname):
     start_hour = imgname.split('_')[0][:2]
     start_min = imgname.split('_')[1][:2]
@@ -79,6 +82,7 @@ def get_time_stamps(imgname):
     end_time = f'{end_hour}:{end_min}:{end_sec},{end_micro}'
     return start_time, end_time
 
+
 def main(mydir=data):
     if CLIENT_ACCOUNT and CLIENT_SECRET_FILE:
         service = get_credentials(CLIENT_SECRET_FILE)
@@ -86,7 +90,8 @@ def main(mydir=data):
         current_directory = Path(Path.cwd())
         raw_texts_dir = Path(f'{current_directory}/raw_texts')
         texts_dir = Path(f'{current_directory}/texts')
-        srt_file = open(os.path.join(f'{current_directory}', 'subtitle_output.srt'), 'a', encoding='utf-8')
+        srt_file = open(os.path.join(
+            f'{current_directory}', 'subtitle_output.srt'), 'a', encoding='utf-8')
         line = 1
 
         if not raw_texts_dir.exists():
@@ -137,10 +142,10 @@ def main(mydir=data):
 
             start_time, end_time = get_time_stamps(imgname)
             srt_file.writelines([
-                 f'{line}\n',
-                 f'{start_time} --> {end_time}\n',
-                 f'{text_content}\n\n',
-                 ''
+                f'{line}\n',
+                f'{start_time} --> {end_time}\n',
+                f'{text_content}\n\n',
+                ''
             ])
             print(f"""{line}: [ {start_time} ]: {imgname}\n{text_content}\n""")
             line += 1
@@ -157,19 +162,20 @@ def main(mydir=data):
         for image in images:
 
             imgname = str(image.name)
-            text_content = detect_text(image)
+            text_content = get_saaccount(image)
 
             if text_content is not None:
                 text_content = text_content.strip()
-                
+
                 start_time, end_time = get_time_stamps(imgname)
                 srt_file.writelines([
-                 f'{line}\n',
-                 f'{start_time} --> {end_time}\n',
-                 f'{text_content}\n\n',
-                 ''
+                    f'{line}\n',
+                    f'{start_time} --> {end_time}\n',
+                    f'{text_content}\n\n',
+                    ''
                 ])
-                print(f"""{line}: [ {start_time} ]: {imgname}\n{text_content}\n""")
+                print(
+                    f"""{line}: [ {start_time} ]: {imgname}\n{text_content}\n""")
                 line += 1
 
         srt_file.close()
